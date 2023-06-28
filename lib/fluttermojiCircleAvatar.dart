@@ -20,9 +20,7 @@ class FluttermojiCircleAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (backgroundColor == null)
-      ClipRRect(
-        borderRadius: BorderRadius.circular(100),
-        child: CircleAvatar(radius: radius, child: buildGetX()));
+      CircleAvatar(radius: radius, child: buildGetX());
     return CircleAvatar(
         radius: radius, backgroundColor: backgroundColor, child: buildGetX());
   }
@@ -35,13 +33,16 @@ class FluttermojiCircleAvatar extends StatelessWidget {
           if (snapshot.fluttermoji.value.isEmpty) {
             return CupertinoActivityIndicator();
           }
-          return SvgPicture.string(
-            snapshot.fluttermoji.value,
-            height: radius * 2,
-            semanticsLabel: "Your Fluttermoji",
-            alignment: Alignment.bottomCenter,
-            placeholderBuilder: (context) => Center(
-              child: CupertinoActivityIndicator(),
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(100),
+            child: SvgPicture.string(
+              snapshot.fluttermoji.value,
+              height: radius * 1.9,
+              semanticsLabel: "Your Fluttermoji",
+              alignment: Alignment.bottomCenter,
+              placeholderBuilder: (context) => Center(
+                child: CupertinoActivityIndicator(),
+              ),
             ),
           );
         });
