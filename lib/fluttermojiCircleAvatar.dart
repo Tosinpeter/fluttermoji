@@ -35,15 +35,12 @@ class FluttermojiCircleAvatar extends StatelessWidget {
           }
           return ClipRRect(
             borderRadius: BorderRadius.circular(100),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 5),
-              child: SvgPicture.string(
-                snapshot.fluttermoji.value,
-                height: radius * 1.985,
-                alignment: Alignment.bottomCenter,
-                placeholderBuilder: (context) => Center(
-                  child: CupertinoActivityIndicator(),
-                ),
+            child: SvgPicture.string(
+              snapshot.fluttermoji.value,
+              height: radius * 1.985,
+              alignment: Alignment.bottomCenter,
+              placeholderBuilder: (context) => Center(
+                child: CupertinoActivityIndicator(),
               ),
             ),
           );
