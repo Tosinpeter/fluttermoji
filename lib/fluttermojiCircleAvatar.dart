@@ -35,7 +35,7 @@ class FluttermojiCircleAvatar extends StatelessWidget {
           }
           return SvgPicture.string(
             snapshot.fluttermoji.value,
-            height: radius * 1.6,
+            height: radius * 1.2,
             semanticsLabel: "Your Fluttermoji",
             alignment: Alignment.bottomCenter,
             placeholderBuilder: (context) => Center(
