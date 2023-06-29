@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import 'fluttermojiController.dart';
@@ -20,30 +20,39 @@ class FluttermojiCircleAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (backgroundColor == null)
-      CircleAvatar(radius: radius, child: buildGetX());
+      CircleAvatar(radius: radius, child: buildGetX(context));
     return CircleAvatar(
-        radius: radius, backgroundColor: backgroundColor, child: buildGetX());
+        radius: radius,
+        backgroundColor: backgroundColor,
+        child: buildGetX(context));
   }
 
-  GetX<FluttermojiController> buildGetX() {
+  GetX<FluttermojiController> buildGetX(BuildContext context) {
     return GetX<FluttermojiController>(
         init: FluttermojiController(),
         autoRemove: false,
-        builder: (snapshot) {
-          if (snapshot.fluttermoji.value.isEmpty) {
+        builder: (mojisnapshot) {
+          if (mojisnapshot.fluttermoji.value.isEmpty) {
             return CupertinoActivityIndicator();
           }
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: SvgPicture.string(
-              snapshot.fluttermoji.value,
-              height: radius * 1.985,
-              alignment: Alignment.bottomCenter,
-              placeholderBuilder: (context) => Center(
-                child: CupertinoActivityIndicator(),
-              ),
-            ),
-          );
+          return FutureBuilder<Uint8List>(
+              future: mojisnapshot.svgToPng(
+                  mojisnapshot.fluttermoji.value, context, 280, 270),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: CircleAvatar(
+                        radius: radius,
+                        child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Image.memory(snapshot.data!))),
+                  );
+                }
+                return Center(
+                  child: CupertinoActivityIndicator(),
+                );
+              });
         });
   }
 }

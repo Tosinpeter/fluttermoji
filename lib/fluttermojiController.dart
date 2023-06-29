@@ -1,4 +1,9 @@
 import 'dart:convert';
+import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
+
 import './fluttermoji_assets/style.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,6 +48,22 @@ class FluttermojiController extends GetxController {
     update();
     fluttermoji.value = getFluttermojiFromOptions();
     update();
+  }
+
+
+  Future<Uint8List> svgToPng(String svgString, BuildContext context, int height,int width) async {
+    final pictureInfo =
+        await vg.loadPicture(SvgStringLoader(svgString), context);
+
+    final image = await pictureInfo.picture.toImage(width, height);
+    final byteData = await image.toByteData(format: ImageByteFormat.png);
+
+    if (byteData == null) {
+      throw Exception('Unable to convert SVG to PNG');
+    }
+
+    final pngBytes = byteData.buffer.asUint8List();
+    return pngBytes;
   }
 
   /// Adds fluttermoji new string to fluttermoji in GetX Controller
