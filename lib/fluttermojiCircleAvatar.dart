@@ -44,6 +44,7 @@ class FluttermojiCircleAvatar extends StatelessWidget {
                     borderRadius: BorderRadius.circular(100),
                     child: CircleAvatar(
                         radius: radius,
+                        backgroundColor: backgroundColor,
                         child: Align(
                             alignment: Alignment.bottomCenter,
                             child: Image.memory(snapshot.data!))),
